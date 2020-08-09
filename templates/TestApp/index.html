@@ -1,0 +1,17 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IsItNewYear</title>
+    <link rel="stylesheet" href="{% static 'TestApp/style.css' %}">
+</head>
+<body>
+{% if newmonth %}
+    <h1>YES</h1>
+{% else %}
+    <h1>NO</h1>
+{% endif %}
+</body>
+</html>
