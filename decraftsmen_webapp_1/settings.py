@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 try:
-    with open('/etc/config.json') as config_file:
+    with open('etc/config.json') as config_file:
         config = json.load(config_file)
         for k, v in config.items():
             os.environ.setdefault(k, v)
@@ -89,11 +89,11 @@ WSGI_APPLICATION = 'decraftsmen_webapp_1.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'sqlite': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'default': {
+    'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('PDB_NAME'),
         'USER': os.environ.get('PDB_USER'),
@@ -143,7 +143,6 @@ STATIC_URL = '/static/'
 
 # Personal Vars
 try:
-    DJANGO_SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
