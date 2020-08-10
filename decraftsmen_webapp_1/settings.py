@@ -17,9 +17,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 try:
-    with open('/etc/config.json') as config_file:
+    with open('etc/config.json') as config_file:
         config = json.load(config_file)
-        os.environ.setdefault('DJANGO_SECRET_KEY', config['DJANGO_SECRET_KEY'])
+        for k, v in config.items():
+            os.environ.setdefault(k, v)
 except FileNotFoundError:
     print('Config file not found using environment vars')
 
@@ -35,6 +36,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 ALLOWED_HOSTS = ['ec2-15-236-158-149.eu-west-3.compute.amazonaws.com', '15.236.158.149',
                  'ec2-35-180-211-169.eu-west-3.compute.amazonaws.com', '35.180.211.169',
                  'www.decraftsmen.xyz',
+                 'decraftsmen.xyz',
                  '127.0.0.1']
 
 # Application definition
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'MainApp.apps.MainappConfig',
     'TestApp.apps.TestappConfig',
+    'storages',
 
 ]
 
@@ -89,7 +92,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'postgres': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PDB_NAME'),
+        'USER': os.environ.get('PDB_USER'),
+        'PASSWORD': os.environ.get('PDB_PASSWORD'),
+        'HOST': os.environ.get('PDB_HOST'),
+        'PORT': os.environ.get('PDB_PORT'),
     }
+
 }
 
 # Password validation
@@ -128,3 +140,18 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# Personal Vars
+try:
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    if AWS_STORAGE_BUCKET_NAME != '':
+        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    else:
+        print(f'AWS_STORAGE', {AWS_STORAGE_BUCKET_NAME})
+except NameError:
+    print('It seems some vars are not set')
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
