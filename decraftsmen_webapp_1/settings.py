@@ -19,10 +19,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 try:
     with open('/etc/config.json') as config_file:
         config = json.load(config_file)
-        os.environ.setdefault('DJANGO_SECRET_KEY', config['DJANGO_SECRET_KEY'])
-        os.environ.setdefault('DJANGO_SECRET_KEY', config['DJANGO_SECRET_KEY'])
-        os.environ.setdefault('DJANGO_SECRET_KEY', config['DJANGO_SECRET_KEY'])
-        os.environ.setdefault('DJANGO_SECRET_KEY', config['DJANGO_SECRET_KEY'])
+        for k, v in config.items():
+            os.environ.setdefault(k, v)
 except FileNotFoundError:
     print('Config file not found using environment vars')
 
@@ -91,10 +89,19 @@ WSGI_APPLICATION = 'decraftsmen_webapp_1.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PDB_NAME'),
+        'USER': os.environ.get('PDB_USER'),
+        'PASSWORD': os.environ.get('PDB_PASSWORD'),
+        'HOST': os.environ.get('PDB_HOST'),
+        'PORT': os.environ.get('PDB_PORT'),
     }
+
 }
 
 # Password validation
