@@ -34,8 +34,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['ec2-15-236-158-149.eu-west-3.compute.amazonaws.com', '15.236.158.149',
-                 'ec2-35-180-211-169.eu-west-3.compute.amazonaws.com', '35.180.211.169',
-                 'www.decraftsmen.xyz',
+                 'ec2-35-181-53-229.eu-west-3.compute.amazonaws.com', '35.181.53.229'
+                                                                      'www.decraftsmen.xyz',
                  'decraftsmen.xyz',
                  '127.0.0.1']
 
@@ -69,8 +69,7 @@ ROOT_URLCONF = 'decraftsmen_webapp_1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
