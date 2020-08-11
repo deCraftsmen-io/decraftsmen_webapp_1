@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 try:
-    with open('etc/config.json') as config_file:
+    with open('/etc/config.json') as config_file:
         config = json.load(config_file)
         for k, v in config.items():
             os.environ.setdefault(k, v)
